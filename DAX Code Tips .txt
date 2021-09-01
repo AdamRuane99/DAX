@@ -1,0 +1,37 @@
+-- Dax Code / M Query Tips 
+
+
+Number.ToText([MonthKey])&"01"
+
+Date.FromText(Text.Range([Date Text], 0, 4)&Text.Range([Date Text], 4, 2)&Text.Range([Date Text], 6,2)) =-- Changing Month keys to Dates 
+
+-----------------------------
+
+
+Top Seller Automation of Narrative = 
+
+COMBINEVALUES (
+
+" ",
+
+"The Top Selling Product was",
+
+TOP Seller,
+
+"with",
+
+TOP Seller VALUE, "€ #,#" ), -- Format the figure into Euro
+
+"in Sales "
+
+
+------------------------
+Highest Sales = CALCULATE(SELECTEDVALUE(FACT_Data[Sales]), TOPN(1, ADDCOLUMNS(VALUES(FACT_Data[Product_name]),"Total Sales",  CALCULATE(SUM('FACT_Data'[Sales]))),[Total Sales], DESC))
+
+TOP Product
+Measure = CALCULATE(SELECTEDVALUE(FACT_Data[Product_name]),TOPN(1,ALL('FACT_Data'[Product_name]), [Sales],DESC))
+
+TOP Seller = CALCULATE(SELECTEDVALUE(FACT_Data[Product_name]),TOPN(1,ALL('FACT_Data'[product_name]), [Sales],DESC))
+TOP Seller VALUE = CALCULATE([Sales], TOPN(1,ALL('FACT_Data'[Product_name]), [Sales],DESC)) 
+-- If Value is long (I.e millions) I can divide, so that it shows in the text -- 
+TOP Seller VALUE = CALCULATE([Sales], TOPN(1,ALL('FACT_Data'[Product_name]), [Sales],DESC)) 
