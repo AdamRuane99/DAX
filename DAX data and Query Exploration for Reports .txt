@@ -1,0 +1,77 @@
+
+
+
+
+-----------
+IF(CALCULATE( SUM ( 'Fact_Sales'Sales ), MAX('Date'[Date])) > 500000, "High Sales", 
+IF(CALCULATE( SUM ( 'Fact_Sales'Sales  ), MAX('Date'[Date])) >250000, "Average",
+IF(CALCULATE( SUM ( 'Fact_Sales'Sales  ), MAX('Date'[Date])) >= 0, "Poor Sales")))
+
+------------------------------
+Differnce in Sales = 
+CALCULATE(
+ AVERAGE('Fact_Sales'[Sales]), 
+ FILTER('Date', 'Date'[Date]= MAX('Date'[Date])
+ )
+ )- 
+ CALCULATE(
+ AVERAGE('Fact_Sales'[Sales] ), 
+ FILTER('Date', 'Date'[Date]=MIN('Date'[Date]))) 
+ --------------------------------
+ -- Some Query Exploration -- 
+ 
+ IF(CALCULATE(
+ MAX('Fact_Sales'[Sales] ), 
+ FILTER('Date', 'Date'[Date]= MAX('Date'[Date])
+ )
+ )- 
+ CALCULATE(
+ MAX('Fact_Sales'[Sales] ), 
+ FILTER('Date', 'Date'[Date]=MIN('Date'[Date]))) > 2500, "Good Improvement in Sales", 
+IF(CALCULATE(
+ MAX('Fact_Sales'[Sales] ), 
+ FILTER('Date', 'Date'[Date]= MAX('Date'[Date])
+ )
+ )- 
+ CALCULATE(
+ MAX('Fact_Sales'[Sales] ), 
+ FILTER('Date', 'Date'[Date]=MIN('Date'[Date]))) >= 500, "Stable",
+
+IF(CALCULATE(
+ MAX('Fact_Sales'[Sales] ), 
+ FILTER('Date', 'Date'[Date]= MAX('Date'[Date])
+ )
+ )- 
+ CALCULATE(
+ MAX('Fact_Sales'[Sales] ), 
+ FILTER('Date', 'Date'[Date]=MIN('Date'[Date]))) < 500, "Improvement Needed"))))
+ 
+ -----------------------
+ -- Assigning some Arrows to these values but also combine both current sales and the change in sales: -- 
+ RAG TEST = 
+SWITCH( TRUE(),
+
+CALCULATE( SUM ( 'Fact_Sales'[Sales] ), MAX('Date'[Date])) > 500000 && CALCULATE(
+ MAX('Fact_Sales'[Sales]), 
+ FILTER('Date', 'Date'[Date]= MAX('Date'[Date])
+ )
+ )- 
+ CALCULATE(
+ MAX('Fact_Sales'[Sales]), 
+ FILTER('Date', 'Date'[Date]=MIN('Date'[Date]))) > 2500 , UNICHAR(9650), -- I.e) Good sales and Improvement!! (Up Arrow) 
+ 
+
+CALCULATE( SUM ( 'Fact_Sales'[Sales] ), MAX('Date'[Date]))  >250000, && CALCULATE(
+ MAX('Fact_Sales'[Sales]), 
+ FILTER('Date', 'Date'[Date]= MAX('Date'[Date])
+ )
+ )- 
+ CALCULATE(
+ MAX('Fact_Sales'[Sales]), 
+ FILTER('Date', 'Date'[Date]=MIN('Date'[Date]))) < 500, UNICHAR (9660),  UNICHAR (11166)) 
+ -- I.e) If sales are average and improvemnt is needed (Down Arrow) and then else Stable Arrow 
+ 
+ ---------------------------
+ These Outputs could then be assigned values and used in Reports or KPI's ...
+
+
